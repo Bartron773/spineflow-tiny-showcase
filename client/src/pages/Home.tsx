@@ -8,11 +8,19 @@ import {
   ChevronDown,
   Lightbulb,
   BookOpen,
+  Upload,
+  FileText,
+  Download,
+  Trash2,
 } from "lucide-react";
 import { ENHANCED_VIEWS } from "@/data/nodeContent";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import { getLoginUrl } from "@/const";
 
 /**
- * SpineFlow Tiny: Enhanced Architectural Showcase
+ * SpineFlow Tiny: Enhanced Architectural Showcase with Full-Stack Capabilities
  * 
  * A living architectural interface where each node is a spatial idea you can explore.
  * Each node represents a moment in the house: a room, a threshold, a material transition, or an atmosphere.
@@ -23,14 +31,18 @@ import { ENHANCED_VIEWS } from "@/data/nodeContent";
  * - Interactive expandable sections for deeper exploration
  * - Conversational prompts to engage users
  * - Direct CDN image URLs for reliable image loading
+ * - Full-stack database persistence
+ * - File storage for architectural assets
  */
 
 export default function SpineFlowTiny() {
+  const { user, isAuthenticated } = useAuth();
   const [views] = useState(ENHANCED_VIEWS);
   const [active, setActive] = useState(0);
   const [blueprintMode, setBlueprintMode] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [showSpecifications, setShowSpecifications] = useState(false);
+  const [showFileStorage, setShowFileStorage] = useState(false);
 
   const mountedRef = useRef(true);
 
@@ -48,6 +60,20 @@ export default function SpineFlowTiny() {
   const toggleSection = (sectionId: string) => {
     setExpandedSection(expandedSection === sectionId ? null : sectionId);
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-white text-3xl mb-6 font-serif">SpineFlow Tiny</h1>
+          <p className="text-white/60 mb-8">Sign in to explore the architectural showcase</p>
+          <Button asChild>
+            <a href={getLoginUrl()}>Sign In with Manus</a>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black font-sans text-white">
@@ -336,6 +362,39 @@ export default function SpineFlowTiny() {
                 </div>
               </div>
             </div>
+
+            {/* File Storage Section */}
+            <button
+              onClick={() => setShowFileStorage(!showFileStorage)}
+              className="w-full flex items-center justify-between p-3 rounded-lg border border-white/10 hover:border-white/20 transition-colors"
+              style={{
+                backgroundColor: showFileStorage ? `${view.palette.accent}15` : "transparent",
+                borderColor: showFileStorage ? view.palette.accent : "rgba(255,255,255,0.1)",
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Upload size={14} />
+                <span
+                  className="font-mono text-[9px] uppercase tracking-widest"
+                  style={{ color: showFileStorage ? view.palette.accent : "inherit" }}
+                >
+                  Asset Storage
+                </span>
+              </div>
+              <ChevronDown
+                size={16}
+                className={`transition-transform ${showFileStorage ? "rotate-180" : ""}`}
+                style={{ color: showFileStorage ? view.palette.accent : "inherit" }}
+              />
+            </button>
+
+            {/* File Storage Panel */}
+            <div className={`spec-panel ${showFileStorage ? "expanded" : ""}`}>
+              <div className="pt-3 text-[10px] text-white/70">
+                <p className="mb-2">Upload architectural documentation and assets for this node.</p>
+                <p className="text-[9px] text-white/50">File storage integration coming soon...</p>
+              </div>
+            </div>
           </div>
 
           {/* Progress Nodes */}
@@ -374,7 +433,7 @@ export default function SpineFlowTiny() {
         {/* Footer Readout */}
         <div className="mt-8 flex items-center justify-between border-t border-white/5 pt-6 opacity-20">
           <span className="font-mono text-[7px] uppercase leading-none tracking-[0.5em]">
-            robotOS_v4.1_Images_Live
+            robotOS_v5.0_FullStack
           </span>
           <Maximize2 size={12} />
         </div>
