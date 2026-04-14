@@ -1,13 +1,9 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ChevronLeft,
   ChevronRight,
-  Aperture,
   Wifi,
-  Loader2,
-  Scan,
   Layers,
-  AlertCircle,
   Maximize2,
   ChevronDown,
   Lightbulb,
@@ -26,20 +22,17 @@ import { ENHANCED_VIEWS } from "@/data/nodeContent";
  * - Expanded narrative and design philosophy
  * - Interactive expandable sections for deeper exploration
  * - Conversational prompts to engage users
+ * - Direct CDN image URLs for reliable image loading
  */
 
 export default function SpineFlowTiny() {
   const [views] = useState(ENHANCED_VIEWS);
   const [active, setActive] = useState(0);
-  const [images, setImages] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState<Record<string, boolean>>({});
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [blueprintMode, setBlueprintMode] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [showSpecifications, setShowSpecifications] = useState(false);
 
   const mountedRef = useRef(true);
-  const inFlightRef = useRef(new Set<string>());
 
   useEffect(() => {
     return () => {
@@ -49,98 +42,8 @@ export default function SpineFlowTiny() {
 
   const view = views[active];
 
-  const generateImage = useCallback(
-    async (idx: number, { forceRetry = false } = {}) => {
-      const v = views[idx];
-      if (!v) return;
-
-      const hasImage = Boolean(images[v.id]);
-      const isLoading = Boolean(loading[v.id]);
-      const hasError = Boolean(errors[v.id]);
-      const isInFlight = inFlightRef.current.has(v.id);
-
-      if (!forceRetry && (hasImage || isLoading || hasError || isInFlight)) {
-        return;
-      }
-
-      inFlightRef.current.add(v.id);
-
-      if (mountedRef.current) {
-        setLoading((prev) => ({ ...prev, [v.id]: true }));
-        setErrors((prev) => {
-          const next = { ...prev };
-          delete next[v.id];
-          return next;
-        });
-      }
-
-      const apiKey = "";
-
-      try {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              instances: [{ prompt: v.prompt }],
-              parameters: { sampleCount: 1 },
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`API_FAIL_${response.status}`);
-        }
-
-        const result = await response.json();
-        const base64 = result?.predictions?.[0]?.bytesBase64Encoded;
-
-        if (!base64) {
-          throw new Error("EMPTY_RESULT");
-        }
-
-        if (mountedRef.current) {
-          setImages((prev) => ({
-            ...prev,
-            [v.id]: `data:image/png;base64,${base64}`,
-          }));
-        }
-      } catch (error) {
-        console.error(`Image generation failed for ${v.id}:`, error);
-
-        if (mountedRef.current) {
-          setErrors((prev) => ({
-            ...prev,
-            [v.id]: "Neural link unstable",
-          }));
-        }
-      } finally {
-        inFlightRef.current.delete(v.id);
-
-        if (mountedRef.current) {
-          setLoading((prev) => ({ ...prev, [v.id]: false }));
-        }
-      }
-    },
-    [views, images, loading, errors]
-  );
-
-  useEffect(() => {
-    if (!views.length) return;
-
-    generateImage(active);
-    generateImage((active + 1) % views.length);
-    generateImage((active - 1 + views.length) % views.length);
-  }, [active, views.length, generateImage]);
-
   const next = () => setActive((prev) => (prev + 1) % views.length);
   const prev = () => setActive((prev) => (prev - 1 + views.length) % views.length);
-
-  const retryActiveImage = () => {
-    if (!view) return;
-    generateImage(active, { forceRetry: true });
-  };
 
   const toggleSection = (sectionId: string) => {
     setExpandedSection(expandedSection === sectionId ? null : sectionId);
@@ -239,54 +142,15 @@ export default function SpineFlowTiny() {
 
         {/* Viewfinder Display */}
         <div className="group relative w-full aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-zinc-900 shadow-2xl">
-          {images[view.id] ? (
-            <img
-              src={images[view.id]}
-              alt={view.label}
-              className={`absolute inset-0 h-full w-full object-cover duration-1000 animate-in fade-in zoom-in-105 ${
-                blueprintMode
-                  ? "grayscale brightness-150 contrast-150 opacity-30"
-                  : ""
-              }`}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Scan className="animate-pulse text-white/5" size={60} />
-            </div>
-          )}
-
-          {/* Loading Overlay */}
-          {loading[view.id] && !images[view.id] && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-black/60 backdrop-blur-xl">
-              <div className="relative">
-                <Loader2
-                  className="animate-spin"
-                  size={48}
-                  style={{ color: view.palette.accent }}
-                />
-                <Aperture className="absolute inset-0 m-auto opacity-40" size={20} />
-              </div>
-              <span className="font-mono text-[9px] uppercase tracking-[0.4em]">
-                Neural_Baking...
-              </span>
-            </div>
-          )}
-
-          {/* Error Overlay */}
-          {errors[view.id] && !loading[view.id] && !images[view.id] && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-zinc-950/90 p-8 text-center">
-              <AlertCircle className="mb-4 text-red-500" size={32} />
-              <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-red-400">
-                {errors[view.id]}
-              </p>
-              <button
-                onClick={retryActiveImage}
-                className="rounded-full border border-red-500/30 px-6 py-2 font-mono text-[9px] uppercase transition-colors hover:bg-red-500/10"
-              >
-                Reconnect_Link
-              </button>
-            </div>
-          )}
+          <img
+            src={view.imageUrl}
+            alt={view.label}
+            className={`absolute inset-0 h-full w-full object-cover duration-1000 animate-in fade-in zoom-in-105 ${
+              blueprintMode
+                ? "grayscale brightness-150 contrast-150 opacity-30"
+                : ""
+            }`}
+          />
 
           {/* Technical HUD */}
           <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-6">
@@ -510,7 +374,7 @@ export default function SpineFlowTiny() {
         {/* Footer Readout */}
         <div className="mt-8 flex items-center justify-between border-t border-white/5 pt-6 opacity-20">
           <span className="font-mono text-[7px] uppercase leading-none tracking-[0.5em]">
-            robotOS_v4.0_Enhanced
+            robotOS_v4.1_Images_Live
           </span>
           <Maximize2 size={12} />
         </div>

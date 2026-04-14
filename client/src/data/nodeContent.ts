@@ -13,6 +13,7 @@ export interface NodeSpec {
   prompt: string;
   atmosphere: string;
   palette: { bg: string; accent: string };
+  imageUrl: string;
   designPhilosophy: string;
   spatialIntent: string;
   materials: {
@@ -36,6 +37,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `Architectural photography of a tiny house entrance with a massive stained-glass facade, geometric teal and blue mosaic patterns. Black steel vertical beams, river stone floor. Soft afternoon sun casting colored shadows --ar 16:9`,
     atmosphere: `Light breaks into fragments, painting the soul in teal geometry.`,
     palette: { bg: "#061a1d", accent: "#2dd4bf" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/mosaic-portal-Xf9ZnhnyLYAfEDJwWGF333.webp",
     designPhilosophy: `The entry is not merely a threshold—it is a manifesto. Stained glass transforms light into language, each geometric fragment a syllable in an architectural poem. Here, the boundary between outside and inside dissolves into pure refraction. The portal announces that this is a space where precision and poetry coexist.`,
     spatialIntent: `To create a moment of pause and wonder. Visitors are meant to stop, look up, and feel the weight of intentional design. The geometric patterns echo natural tessellations found in nature—honeycomb, crystalline structures, the segmented eye of an insect. This is architecture that speaks to both the rational and the mystical mind.`,
     materials: {
@@ -75,6 +77,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `Interior tiny house office inspired by Ottawa tribe textures. Hand-hewn heavy timber beams, woven reed wall coverings, a large window looking into a Michigan forest. Modern desk, minimalist tech. Warm, respectful, earthy aesthetic --ar 16:9`,
     atmosphere: `A space for deep work, anchored by the weight of timber and the stories of the Odawa.`,
     palette: { bg: "#1c1917", accent: "#fb923c" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/heritage-study-bSqoPA4kXqD4hJ7Um4fk6v.webp",
     designPhilosophy: `This study honors the craftsmanship and wisdom of the Odawa people, whose ancestral lands surround this site. The design philosophy centers on respect, materiality, and the marriage of traditional craft with contemporary function. Heavy timber is not merely structural—it is a statement of permanence and connection to the land. Every beam tells a story of growth, seasons, and time.`,
     spatialIntent: `To create a sanctuary for deep intellectual work, grounded in cultural respect and natural materials. The large forest-facing window ensures that the work happening inside is always in dialogue with the living world outside. This is a space where ideas are born from contemplation, not distraction.`,
     materials: {
@@ -114,6 +117,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `Modern tiny house kitchen at night. Under-cabinet amber LED lighting, dark slate countertops, minimalist black fixtures. No overhead lights. High-end, moody, night-owl aesthetic. View of a starry sky through a thin window --ar 16:9`,
     atmosphere: `Optimized for the midnight mind. Soft amber glows where the day used to be.`,
     palette: { bg: "#020617", accent: "#f59e0b" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/3am-kitchen-7XT9Y8yDa3VgXedKR5KC4i.webp",
     designPhilosophy: `This kitchen rejects the tyranny of overhead lighting and the assumption that all spaces must be equally bright. Instead, it embraces the circadian rhythms of the night-dwelling human. Amber light (2200K color temperature) is scientifically proven to minimize melatonin suppression, allowing the body to remain in a state of calm alertness. This is a kitchen designed for the creative mind at 3 AM—for the writer, the musician, the insomniac philosopher.`,
     spatialIntent: `To create a space where nocturnal creativity is not just tolerated but celebrated. The under-cabinet lighting provides functional illumination for food preparation while maintaining the intimate, meditative quality of the night. The absence of overhead lights is intentional—it forces the user to be intentional about their movements, to slow down, to be present.`,
     materials: {
@@ -153,6 +157,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `Exterior shot of a tiny house at dusk with a sidewalk made of hexagonal glass solar panels glowing softly from within. The path leads to a modern house with a river stone base and black steel accents. Cinematic night lighting --ar 16:9`,
     atmosphere: `The ground drinks the sun all day and breathes it back as light at night.`,
     palette: { bg: "#0f172a", accent: "#38bdf8" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/kinetic-path-JpgygrmrqL8dNTZAFCWUzw.webp",
     designPhilosophy: `The Kinetic Path embodies a radical rethinking of infrastructure as poetry. Rather than hiding solar technology behind roof panels or in utility closets, it is celebrated as the primary architectural feature. The hexagonal geometry echoes natural patterns—honeycomb, basalt columns, the segmented eye. The path is not just functional; it is a statement about the integration of technology and nature, sustainability and beauty.`,
     spatialIntent: `To create a journey that is both practical and transcendent. As visitors walk the path, they are literally treading on captured sunlight. The glow beneath their feet is a constant reminder of the relationship between energy, time, and place. The path guides movement while generating power—a perfect marriage of form and function.`,
     materials: {
@@ -192,6 +197,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `A deep, covered porch on a modern tiny house. Warm cedar wood, black steel railings. A redbone hound sits looking out over a misty meadow. The roof is extended to ensure no rain reaches the deck. High-end architectural style --ar 16:9`,
     atmosphere: `A sanctuary for Oliver. The mist stays in the meadow; the porch stays dry.`,
     palette: { bg: "#1a120b", accent: "#f97316" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/hounds-perch-h7RCwxXLfKUJHtYwWhwyD9.webp",
     designPhilosophy: `The Hound's Perch is designed around a simple principle: the boundary between inside and outside should be negotiable, not absolute. This is a space where the inhabitant (human or canine) can exist in a state of in-between-ness—sheltered but not enclosed, connected to the landscape but protected from its harshness. The deep overhang is not just functional; it is a gesture of care and intentionality.`,
     spatialIntent: `To create a threshold space where observation and contemplation are the primary activities. The porch is designed for watching—watching the weather, watching the meadow, watching the light change. It is a space where time moves differently, where the pace of life slows to match the pace of nature. For Oliver, it is a sanctuary where he can be present to the world without being exposed to its elements.`,
     materials: {
@@ -231,6 +237,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `Detail of a wall where red brick transitions into large smooth river stones. Black steel vertical structural beams. Modern glass reflections of pines. Soft overcast lighting --ar 16:9`,
     atmosphere: `Where the earth meets the hand-made. The heavy anchor of Hart.`,
     palette: { bg: "#1c1917", accent: "#a8a29e" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/stone-siding-PTswpHuRv3QbmPXNkmFJmd.webp",
     designPhilosophy: `Stone & Siding is a study in material honesty and tectonic expression. The transition between brick and river stone is not hidden or disguised—it is celebrated as a moment of architectural dialogue. This wall tells the story of two materials with different origins, different histories, and different relationships to time. The brick speaks of human craft; the river stone speaks of geological time. Together, they create a narrative about the layering of human and natural history.`,
     spatialIntent: `To create a visual and tactile anchor point that grounds the entire structure. This wall is the foundation—literally and metaphorically. It speaks to permanence, to the weight of materials, to the relationship between human craft and natural forces. Standing before this wall, one is meant to feel the passage of time, the accumulation of care and intention.`,
     materials: {
@@ -270,6 +277,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `Interior living room where one wall is a large laser-cut honeycomb pattern. Sunlight casting hexagonal shadows across oak floors and a minimalist green velvet sofa. Biophilic design --ar 16:9`,
     atmosphere: `Shadows of a forest made of math. Permanent, structured sunlight.`,
     palette: { bg: "#064e3b", accent: "#10b981" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/cellular-lounge-Kf3Mv2vPn4u5GD6iwiWvg3.webp",
     designPhilosophy: `The Cellular Lounge is a meditation on the intersection of natural patterns and mathematical precision. The honeycomb pattern is not merely decorative—it is a reference to one of nature's most efficient structures, a pattern that appears in beehives, in crystalline structures, in the segmented eyes of insects. By laser-cutting this pattern into a solid wall, we create a dialogue between the organic and the constructed, between nature and technology. The result is a space that feels both mathematical and alive.`,
     spatialIntent: `To create a living room that is both intellectually engaging and emotionally nourishing. The honeycomb wall transforms sunlight into shadow, creating a dynamic, ever-changing visual experience. The green velvet sofa invites rest and contemplation. The oak flooring grounds the space in natural warmth. This is a room designed for both solitude and connection, for both intellectual engagement and emotional ease.`,
     materials: {
@@ -309,6 +317,7 @@ export const ENHANCED_VIEWS: NodeSpec[] = [
     prompt: `Exterior tiny house in a misty forest at dusk. Perforated metal skin glowing from within with teal light. The house looks like a glowing lantern. Curved roofline, black steel --ar 16:9`,
     atmosphere: `A solitary pulse in the woods. Lit for the wanderer and the owl.`,
     palette: { bg: "#020617", accent: "#22d3ee" },
+    imageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663502321228/nwH7tTdb4mNrVx2nkaaBSw/forest-lantern-HrcgrNUKKPs65HNWULzGkf.webp",
     designPhilosophy: `The Forest Lantern is a beacon—a solitary pulse in the darkness of the woods. The perforated metal skin transforms the house into a glowing object, visible from a distance but mysterious up close. This is architecture as communication, as signal. The house is not trying to hide or blend in; it is announcing its presence, inviting the wanderer and the owl to witness its existence. The teal light is not arbitrary—it is inspired by the bioluminescence of deep-sea creatures, a light that seems to come from within rather than without.`,
     spatialIntent: `To create a presence in the forest that is both welcoming and mysterious. The glowing perforated skin creates a sense of warmth and safety while maintaining a sense of otherness. This is a space that is meant to be seen from a distance, to be approached with curiosity and wonder. The curved roofline echoes the organic forms of the surrounding forest, while the teal light speaks to something more technological, more otherworldly.`,
     materials: {
