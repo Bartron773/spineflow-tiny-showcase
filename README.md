@@ -1,34 +1,49 @@
-# SpineFlow Tiny
+🌲 SpineFlow Tiny Showcase v6.7
 
-SpineFlow Tiny is a spatial interface prototype for exploring architectural ideas as interactive nodes. Each node represents a designed space, rendered visually and enriched with AI-powered narrative, material specifications, and conversational interaction.
+Welcome to the official repository for SpineFlow Tiny, a specialized architectural visualizer and AGI interface designed by Bart Salazar.
 
-## ✨ Features
+This project showcases a "Blue-Glass Cathedral" aesthetic—a Mid-Century Modern sanctuary conceptualized for the cedar forests of Hart, Michigan.
 
-- 🧠 AI-generated architectural imagery (Gemini / Imagen)
-- 🗣️ Architectural Oracle (text-to-speech narration)
-- 🧱 Material Manifest (technical spec generation)
-- 💬 Spatial Dialogue (per-node AI chat)
-- 🌐 Dynamic node synthesis (generate new spaces live)
-- 🎥 Cinematic viewing mode
+🧠 The Pegasus Core
 
-## 🧭 How It Works
+At the heart of this application is Pegasus, a spatial intelligence designed to analyze light, geometry, and heritage. Pegasus provides real-time architectural critiques and manages the "robotOS" kernel that powers the house's soul.
 
-Each "node" represents a designed space:
-- Navigate between nodes
-- Generate imagery on demand
-- Ask the space questions
-- Expand the system with new nodes
+✨ Key Capabilities
 
-## 🚀 Getting Started
+Latent Space Visualization: Integrates imagen-4.0 for generating hyper-realistic architectural concepts.
 
-```bash
+Odawa Heritage Study: Nodes dedicated to the legacy of Chief Cobmoosa, blending heavy timber with minimalist technology.
+
+J.O.E. Integration: A dedicated portal for "Juxtaposed Organic Emulation," exploring the existential boundaries of AGI.
+
+Pegasus Dialogue: A poetic, sophisticated chat interface powered by gemini-2.5-flash.
+
+🛠️ Technical Implementation
+
+Framework: React 18 (Single-file "Atomic" architecture).
+
+Styling: Tailwind CSS + Framer Motion (Glassmorphism UI).
+
+Models: - Reasoning: gemini-2.5-flash-preview-09-2025
+
+Vision: imagen-4.0-generate-001
+
+Voice: gemini-2.5-flash-preview-tts (Voice: Kore/Charon)
+
+Deployment: Optimized for GitHub Pages.
+
+🚀 Setup & Launch
+
+Clone the repository:
+git clone [https://github.com/Bartron773/spineflow-tiny-showcase.git](https://github.com/Bartron773/spineflow-tiny-showcase.git)
+
+Install Dependencies:
 npm install
-npm run dev
 
-🔑 Environment Variables
+Run Locally:
+npm start
 
-Create a .env file:
-VITE_GEMINI_API_KEY=your_api_key_here
+Created with curiosity and precision in Hart, Michigan. Narrated by Pegasus.
 
 🧠 Tech Stack
 
