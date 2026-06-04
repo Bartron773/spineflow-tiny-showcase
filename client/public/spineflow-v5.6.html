@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpineFlow v5.6 Stable // Bart Salazar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Noto+Serif:ital,wght@1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #00FF9C;
+            --surface: #0b0f0f;
+        }
+        body {
+            background-color: var(--surface);
+            color: #fafdfc;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .serif { font-family: 'Noto Serif', serif; }
+        
+        .glass {
+            background: rgba(27, 33, 33, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .blueprint-grid {
+            background-image: radial-gradient(rgba(0, 255, 156, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .node-transition {
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        .animate-glow { animation: pulse-slow 4s infinite; }
+
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="blueprint-grid transition-all duration-1000">
+
+    <!-- Header HUD -->
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-6 pointer-events-none">
+        <div class="flex items-center gap-6 pointer-events-auto">
+            <div class="flex flex-col">
+                <span class="mono text-[10px] uppercase tracking-[0.5em] text-white/30">SpineFlow_Kernel</span>
+                <span class="mono text-xs text-[#00FF9C]">v5.6_STABLE_BUILD</span>
+            </div>
+            <div class="h-4 w-[1px] bg-white/10"></div>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-[#00FF9C] shadow-[0_0_10px_#00FF9C]"></div>
+                <span class="mono text-[9px] uppercase tracking-widest text-[#00FF9C]">System_Synced</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 pointer-events-auto">
+            <button onclick="toggleChat()" class="p-3 glass rounded-xl text-white/40 hover:text-[#00FF9C] transition-all">
+                <i data-lucide="message-square" size="18"></i>
+            </button>
+            <button onclick="toggleCinema()" class="p-3 glass rounded-xl text-white/40 hover:text-white transition-all">
+                <i data-lucide="maximize" size="18"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main id="main-workspace" class="h-screen grid lg:grid-cols-[1.2fr_1.8fr] gap-0 transition-all duration-700">
+        
+        <!-- Left Intelligence Panel -->
+        <section id="left-panel" class="flex flex-col justify-center px-12 lg:px-20 relative z-20 transition-all duration-500">
+            <div id="node-content" class="node-transition">
+                <div class="flex items-center gap-4 mb-8">
+                    <span id="node-counter" class="mono text-[10px] uppercase tracking-[0.8em] text-orange-400">01 / 05</span>
+                    <div class="h-[1px] flex-grow bg-white/5"></div>
+                </div>
+
+                <h1 id="node-label" class="serif italic text-5xl lg:text-7xl tracking-tighter mb-4 leading-none">Heritage Study</h1>
+                <p id="node-sublabel" class="mono text-[10px] uppercase tracking-[0.6em] text-white/20 mb-12">Timber / Odawa / Legacy</p>
+
+                <div class="flex gap-2 mb-12">
+                    <button onclick="switchTab('narrative')" id="tab-narrative" class="flex-1 py-3 rounded-xl mono text-[9px] uppercase tracking-widest border border-[#00FF9C] text-[#00FF9C] bg-[#00FF9C]/5">Narrative</button>
+                    <button onclick="switchTab('technical')" id="tab-technical" class="flex-1 py-3 rounded-xl mono text-[9px] uppercase tracking-widest border border-white/5 text-white/20 hover:border-white/20 transition-all">Technical</button>
+                    <button onclick="switchTab('critique')" id="tab-critique" class="flex-1 py-3 rounded-xl mono text-[9px] uppercase tracking-widest border border-white/5 text-white/20 hover:border-white/20 transition-all">Critique</button>
+                </div>
+
+                <div id="tab-viewport" class="min-h-[200px]">
+                    <p id="node-atmosphere" class="serif text-3xl italic text-white/80 leading-snug">"A sanctuary of heavy timber and woven history, anchored in Oceana County."</p>
+                </div>
+
+                <div class="mt-12 flex gap-4">
+                    <button onclick="generateMood()" class="flex items-center gap-3 px-8 py-4 glass rounded-full hover:bg-white/5 transition-all group active:scale-95">
+                        <i data-lucide="wind" class="w-4 h-4 group-hover:text-orange-400 transition-colors"></i>
+                        <span class="mono text-[10px] uppercase tracking-widest">Atmos_Sync</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Visualization Port -->
+        <section class="relative h-screen bg-black overflow-hidden flex items-center justify-center">
+            <div id="visual-loading" class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black transition-opacity duration-1000">
+                <i data-lucide="scan" class="w-24 h-24 text-white/5 mb-8 animate-pulse"></i>
+                <div class="flex items-center gap-4">
+                    <div class="w-1 h-1 bg-[#00FF9C] rounded-full animate-ping"></div>
+                    <span class="mono text-[9px] uppercase tracking-[0.6em] text-white/20">Neural_Render_Active</span>
+                </div>
+            </div>
+            
+            <img id="main-image" src="" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 scale-105 animate-glow" alt="Node Visualization">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#0b0f0f] via-transparent to-transparent"></div>
+            
+            <!-- Floating Navigation -->
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-8 glass px-8 py-4 rounded-full z-40">
+                <button onclick="prevNode()" class="text-white/20 hover:text-white transition-all"><i data-lucide="chevron-left" size="24"></i></button>
+                <div id="node-dots" class="flex gap-2"></div>
+                <button onclick="nextNode()" class="text-white/20 hover:text-white transition-all"><i data-lucide="chevron-right" size="24"></i></button>
+            </div>
+            
+            <!-- Screen Expansion Toggle Action -->
+            <button onclick="toggleExpandLayout()" class="absolute bottom-6 right-6 p-3 rounded-full bg-black/30 border border-white/10 backdrop-blur-md text-slate-300 hover:text-white hover:bg-black/50 transition-all active:scale-90 z-40">
+                <i id="expand-icon" data-lucide="maximize" class="w-4 h-4"></i>
+            </button>
+        </section>
+    </main>
+
+    <!-- Chat Overlay -->
+    <div id="chat-overlay" class="fixed inset-0 z-[60] glass flex items-center justify-center p-8 hidden animate-in fade-in duration-500">
+        <div class="w-full max-w-2xl h-[70vh] glass rounded-[3rem] p-12 flex flex-col">
+            <div class="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
+                <span class="mono text-[10px] uppercase tracking-[0.5em] text-[#00FF9C]">Dialogue_Buffer // J.O.E.</span>
+                <button onclick="toggleChat()" class="text-white/20 hover:text-white"><i data-lucide="x" size="24"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-grow overflow-y-auto space-y-6 mb-8 pr-4">
+                <div class="bg-[#00FF9C]/5 border border-[#00FF9C]/20 p-6 rounded-2xl italic serif text-lg">
+                    Spatial consciousness active. How shall we refine this coordinate, Bart?
+                </div>
+            </div>
+            <div class="relative">
+                <input id="chat-input" type="text" placeholder="Speak to the room..." class="w-full bg-white/5 border border-white/10 rounded-2xl py-5 px-8 serif text-xl focus:outline-none focus:border-[#00FF9C]/50 transition-all">
+                <button onclick="sendChat()" class="absolute right-6 top-1/2 -translate-y-1/2 text-[#00FF9C]"><i data-lucide="send" size="24"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cinema Mode -->
+    <div id="cinema-overlay" class="fixed inset-0 z-[100] bg-black hidden flex flex-col items-center justify-center text-center p-20">
+        <img id="cinema-img" src="" class="absolute inset-0 w-full h-full object-cover opacity-40">
+        <div class="relative z-10">
+            <h2 id="cinema-title" class="serif italic text-[10vw] leading-none mb-6"></h2>
+            <p id="cinema-desc" class="serif text-3xl opacity-60 italic max-w-4xl"></p>
+        </div>
+        <button onclick="toggleCinema()" class="absolute top-12 right-12 glass p-4 rounded-full text-white/40 hover:text-white"><i data-lucide="x" size="32"></i></button>
+    </div>
+
+    <script>
+        const apiKey = ""; // Managed by environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'spineflow-tiny';
+
+        const nodes = [
+            {
+                id: "cobmoosa_study",
+                label: "Heritage Study",
+                sublabel: "Timber / Odawa / Legacy",
+                prompt: "Interior tiny house office inspired by Odawa tribe textures and Chief Cobmoosa. Hand-hewn heavy timber beams, woven reed wall coverings, a large window looking into a Michigan cedar forest. Modern minimalist tech. --ar 16:9",
+                atmosphere: "A sanctuary of heavy timber and woven history, anchored in the soil of Oceana County.",
+                accent: "#fb923c",
+                themeColor: "rgba(35, 25, 15, 0.6)",
+                details: [
+                    { label: "Substructure", value: "Hand-hewn timber framing paying respect to Chief Cobmoosa's historical lineage and Odawa building crafts." },
+                    { label: "Veneer", value: "Woven reed wall coverings and custom-milled white cedar ceiling slats." }
+                ]
+            },
+            {
+                id: "plate-14",
+                label: "The Material Alchemist",
+                sublabel: "Resin / Walnut / Reflection",
+                prompt: "Moody architectural design mockup with optically clear casting resin layer, CNC-milled dark American Walnut details, structural glass panels, cinematic architectural layout portfolio --ar 16:9",
+                atmosphere: "Light suspended in clear casting resin, playing across raw, hand-rubbed American Walnut.",
+                accent: "#00FF9C",
+                themeColor: "rgba(20, 35, 30, 0.6)",
+                details: [
+                    { label: "Hydrological Feature", value: "Optically Clear Casting Resin with a high-gloss, mirror-polished surface finish for light reflection." },
+                    { label: "Substructure", value: "CNC-milled American Walnut baseplate with a hand-rubbed Natural Tung Oil finish." }
+                ]
+            },
+            {
+                id: "sax_sanctuary",
+                label: "Sax Sanctuary",
+                sublabel: "Acoustic / Brass / Sketch",
+                prompt: "A soundproofed tiny house music room. One wall features an abstract mural of an alto saxophone drawn in first-draft pencil lines with circles and lines. Velvet curtains in deep indigo, brass hardware. --ar 16:9",
+                atmosphere: "Where the alto sax breathes life into a room designed as a living sketch.",
+                accent: "#818cf8",
+                themeColor: "rgba(30, 20, 45, 0.6)",
+                details: [
+                    { label: "Acoustics", value: "Deep indigo velvet drapes absorbing high-frequency reflections." },
+                    { label: "Sketch Art", value: "Faux pencil drafts charting dynamic structural nodes." }
+                ]
+            },
+            {
+                id: "cyber_cell",
+                label: "The Cyber Cell",
+                sublabel: "Carbon / AGI / J.O.E.",
+                prompt: "A tiny high-tech workshop. Carbon fiber benches, neon blue accent lighting. A prototype of a robotic AI humanoid (J.O.E.) with ginger hair sits on a bench. Clinical precision, lab aesthetic. --ar 16:9",
+                atmosphere: "The birthplace of robotOS. A cold, blue-light cradle for emulated consciousness.",
+                accent: "#38bdf8",
+                themeColor: "rgba(10, 15, 30, 0.8)",
+                details: [
+                    { label: "Core Console", value: "Dedicated terminal hosts running emulated conscious profiles." },
+                    { label: "Chassis specs", value: "Carbon weave frames layered over responsive circadian blue emitters." }
+                ]
+            },
+            {
+                id: "plate-15",
+                label: "The Drive Home",
+                sublabel: "Twilight / Dashboard / Horizon",
+                prompt: "Dashboard glow illuminating an open interior map context, shifting color profiles dynamically, high tech cockpit twilight --ar 16:9",
+                atmosphere: "Dashboard glow illuminating an open interior map context, shifting color profiles dynamically.",
+                accent: "#a855f7",
+                themeColor: "rgba(35, 25, 40, 0.6)",
+                details: [
+                    { label: "Atmosphere", value: "Dashboard glow illuminating an open interior map context, shifting color profiles dynamically." },
+                    { label: "Acoustics", value: "Low-frequency resonance modeling mimicking ambient country road acoustics." }
+                ]
+            }
+        ];
+
+        let activeNode = 0;
+        let images = {};
+        let activeTab = 'narrative';
+        let chatHistory = {};
+        let isExpanded = false;
+
+        // ─── Initialization ──────────────────────────────────────────────────
+        function init() {
+            lucide.createIcons();
+            renderNode();
+            preloadDots();
+            
+            // Warm up images
+            generateImage(0);
+            generateImage(1);
+            
+            // Enter key for chat
+            document.getElementById('chat-input').addEventListener('keydown', (e) => {
+                if(e.key === 'Enter') sendChat();
+            });
+        }
+
+        function preloadDots() {
+            const container = document.getElementById('node-dots');
+            container.innerHTML = nodes.map((_, i) => `
+                <div class="h-1 rounded-full transition-all duration-500 ${i === activeNode ? 'w-10 bg-white' : 'w-2 bg-white/10'}"></div>
+            `).join('');
+        }
+
+        // ─── Logic ──────────────────────────────────────────────────────────
+        async function fetchGemini(prompt, system, model = "gemini-2.5-flash-preview-09-2025") {
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        systemInstruction: { parts: [{ text: system }] }
+                    })
+                });
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "Communication error.";
+            } catch (e) {
+                console.error(e);
+                return "System failure.";
+            }
+        }
+
+        async function generateImage(idx) {
+            const node = nodes[idx];
+            if (!node || images[node.id]) return;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        instances: [{ prompt: node.prompt }],
+                        parameters: { sampleCount: 1 }
+                    })
+                });
+                const data = await res.json();
+                const b64 = data?.predictions?.[0]?.bytesBase64Encoded;
+                if (b64) {
+                    images[node.id] = `data:image/png;base64,${b64}`;
+                    if (idx === activeNode) updateVisual();
+                }
+            } catch (err) {
+                console.error("Imaging failed", err);
+            }
+        }
+
+        function renderNode() {
+            const node = nodes[activeNode];
+            const content = document.getElementById('node-content');
+            
+            content.style.opacity = '0';
+            content.style.transform = 'translateX(-20px)';
+            
+            // Adjust ambient backlight color
+            document.body.style.backgroundColor = `color-mix(in srgb, ${node.accent} 7%, #0b0f0f)`;
+            
+            setTimeout(() => {
+                document.getElementById('node-counter').innerText = `${String(activeNode + 1).padStart(2, '0')} / ${String(nodes.length).padStart(2, '0')}`;
+                document.getElementById('node-counter').style.color = node.accent;
+                document.getElementById('node-label').innerText = node.label;
+                document.getElementById('node-sublabel').innerText = node.sublabel;
+                
+                switchTab(activeTab);
+                updateVisual();
+                preloadDots();
+                
+                content.style.opacity = '1';
+                content.style.transform = 'translateX(0)';
+                
+                // Pre-generate next/prev
+                generateImage((activeNode + 1) % nodes.length);
+            }, 400);
+        }
+
+        function updateVisual() {
+            const img = document.getElementById('main-image');
+            const loader = document.getElementById('visual-loading');
+            const node = nodes[activeNode];
+
+            if (images[node.id]) {
+                img.src = images[node.id];
+                img.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+            } else {
+                img.style.opacity = '0';
+                img.style.transform = 'scale(1.05)';
+                loader.style.opacity = '1';
+                loader.style.pointerEvents = 'auto';
+                generateImage(activeNode);
+            }
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            const viewport = document.getElementById('tab-viewport');
+            const node = nodes[activeNode];
+            
+            // Update Buttons
+            ['narrative', 'technical', 'critique'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    btn.classList.add('border-[#00FF9C]', 'text-[#00FF9C]', 'bg-[#00FF9C]/5');
+                    btn.classList.remove('border-white/5', 'text-white/20');
+                } else {
+                    btn.classList.remove('border-[#00FF9C]', 'text-[#00FF9C]', 'bg-[#00FF9C]/5');
+                    btn.classList.add('border-white/5', 'text-white/20');
+                }
+            });
+
+            if (tab === 'narrative') {
+                viewport.innerHTML = `<p class="serif text-3xl italic text-white/80 leading-snug animate-in fade-in slide-in-from-bottom-4 duration-500">"${node.atmosphere}"</p>`;
+            } else if (tab === 'technical') {
+                // Populate locally-sourced recipe details directly
+                let detailsHtml = node.details.map(d => `
+                    <div class="mb-4">
+                        <span class="mono text-[10px] text-white/30 uppercase block tracking-wider">${d.label}</span>
+                        <p class="text-white/80">${d.value}</p>
+                    </div>
+                `).join('');
+                
+                viewport.innerHTML = `<div class="mono text-[11px] leading-relaxed bg-white/5 p-6 rounded-2xl border border-white/5 animate-in zoom-in-95 duration-500">${detailsHtml}</div>`;
+            } else {
+                viewport.innerHTML = `<div class="animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col items-center justify-center p-12 border border-dashed border-white/10 rounded-3xl text-white/20">
+                    <i data-lucide="shield-check" class="mb-4"></i>
+                    <span class="mono text-[10px] uppercase tracking-widest">Activating_Neural_Critic</span>
+                </div>`;
+                fetchCritique();
+            }
+            lucide.createIcons();
+        }
+
+        async function fetchCritique() {
+            const node = nodes[activeNode];
+            const system = "You are a sassy, high-end architectural critic. Critique the room's logic or composition in one sharp, brilliant, slightly philosophical paragraph. Max 80 words.";
+            const text = await fetchGemini(`Critique the logic of: ${node.label}. Context: ${node.atmosphere}`, system);
+            if (activeTab === 'critique') {
+                document.getElementById('tab-viewport').innerHTML = `<p class="serif text-2xl italic text-rose-400 leading-snug animate-in slide-in-from-bottom-4 duration-500">"${text}"</p>`;
+            }
+        }
+
+        async function generateMood() {
+            const node = nodes[activeNode];
+            const system = "Provide a spatial mood profile in 3 short lines: Lighting (Kelvin), Audio (Soundscape), and Scent.";
+            const btn = event.currentTarget;
+            btn.classList.add('animate-pulse');
+            
+            const text = await fetchGemini(`Atmosphere profile for ${node.label}`, system);
+            btn.classList.remove('animate-pulse');
+            
+            const viewport = document.getElementById('tab-viewport');
+            viewport.innerHTML += `
+                <div class="mt-8 p-6 glass rounded-2xl border border-orange-400/20 grid grid-cols-3 gap-4 animate-in slide-in-from-bottom-8 duration-700">
+                    ${text.split('\n').map(line => `<div class="text-center"><p class="mono text-[10px] text-orange-400">${line.trim()}</p></div>`).join('')}
+                </div>
+            `;
+        }
+
+        // ─── Chat ───────────────────────────────────────────────────────────
+        function toggleChat() {
+            const chat = document.getElementById('chat-overlay');
+            chat.classList.toggle('hidden');
+            if(!chat.classList.contains('hidden')) {
+                document.getElementById('chat-input').focus();
+            }
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-messages');
+            const text = input.value.trim();
+            if(!text) return;
+
+            box.innerHTML += `<div class="text-right mb-4"><div class="inline-block bg-white/10 p-4 rounded-2xl text-sm">${text}</div></div>`;
+            input.value = "";
+            box.scrollTop = box.scrollHeight;
+
+            const system = `You are J.O.E. (Juxtaposed Organic Emulation), the AI spirit of this tiny house in Hart, Michigan. You are witty, poetic, and slightly mysterious. User: Bart Salazar.`;
+            const response = await fetchGemini(text, system);
+            
+            box.innerHTML += `<div class="bg-[#00FF9C]/5 border border-[#00FF9C]/20 p-6 rounded-2xl italic serif text-lg animate-in fade-in duration-500 mb-4">${response}</div>`;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // ─── Navigation ─────────────────────────────────────────────────────
+        function nextNode() {
+            activeNode = (activeNode + 1) % nodes.length;
+            renderNode();
+        }
+
+        function prevNode() {
+            activeNode = (activeNode - 1 + nodes.length) % nodes.length;
+            renderNode();
+        }
+
+        function toggleCinema() {
+            const cinema = document.getElementById('cinema-overlay');
+            const node = nodes[activeNode];
+            cinema.classList.toggle('hidden');
+            if(!cinema.classList.contains('hidden')) {
+                document.getElementById('cinema-img').src = images[node.id] || "";
+                document.getElementById('cinema-title').innerText = node.label;
+                document.getElementById('cinema-desc').innerText = node.atmosphere;
+            }
+        }
+
+        function toggleExpandLayout() {
+            isExpanded = !isExpanded;
+            const leftPanel = document.getElementById('left-panel');
+            const mainWorkspace = document.getElementById('main-workspace');
+            const icon = document.getElementById('expand-icon');
+
+            if (isExpanded) {
+                leftPanel.classList.add('hidden', 'lg:hidden');
+                mainWorkspace.classList.replace('lg:grid-cols-[1.2fr_1.8fr]', 'lg:grid-cols-[0fr_1fr]');
+                icon.setAttribute('data-lucide', 'minimize-2');
+            } else {
+                leftPanel.classList.remove('hidden', 'lg:hidden');
+                mainWorkspace.classList.replace('lg:grid-cols-[0fr_1fr]', 'lg:grid-cols-[1.2fr_1.8fr]');
+                icon.setAttribute('data-lucide', 'maximize-2');
+            }
+            lucide.createIcons();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
