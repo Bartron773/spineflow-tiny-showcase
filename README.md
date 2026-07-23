@@ -1,85 +1,42 @@
-🌲 SpineFlow Tiny Showcase v6.7
+# SpineFlow Tiny Showcase
 
-Welcome to the official repository for SpineFlow Tiny, a specialized architectural visualizer and AGI interface designed by Bart Salazar.
+An experimental architectural visualizer and spatial-intelligence interface designed by **Bart Salazar** through **Simple Minds Studios**.
 
-This project showcases a "Blue-Glass Cathedral" aesthetic—a Mid-Century Modern sanctuary conceptualized for the cedar forests of Hart, Michigan.
+## Concept
 
-🧠 The Pegasus Core
+SpineFlow Tiny explores a “Blue-Glass Cathedral” aesthetic: a Mid-Century Modern sanctuary imagined for the cedar forests of Hart, Michigan. The project combines architectural visualization, narrative interface design, AI-assisted ideation, and the evolving SpineFlow / robotOS design language.
 
-At the heart of this application is Pegasus, a spatial intelligence designed to analyze light, geometry, and heritage. Pegasus provides real-time architectural critiques and manages the "robotOS" kernel that powers the house's soul.
+## Key Elements
 
-✨ Key Capabilities
+- **Pegasus Core** — a conceptual spatial-intelligence layer for light, geometry, heritage, and architectural critique
+- **Odawa heritage studies** — exploratory design nodes connecting place, material, and regional history
+- **J.O.E. integration** — a narrative portal exploring the boundary between organic and artificial identity
+- **AI-assisted prototyping** — experimental text, image, and voice workflows using third-party model services
 
-Latent Space Visualization: Integrates imagen-4.0 for generating hyper-realistic architectural concepts.
+## Technical Profile
 
-Odawa Heritage Study: Nodes dedicated to the legacy of Chief Cobmoosa, blending heavy timber with minimalist technology.
+- React and Vite
+- Tailwind CSS
+- Framer Motion
+- Lucide icons
+- Third-party generative-AI APIs
+- GitHub Pages-compatible deployment
 
-J.O.E. Integration: A dedicated portal for "Juxtaposed Organic Emulation," exploring the existential boundaries of AGI.
+## Status
 
-Pegasus Dialogue: A poetic, sophisticated chat interface powered by gemini-2.5-flash.
+Experimental conceptual product and design showcase. Model names, endpoints, and external demonstrations may change or become unavailable over time.
 
-🛠️ Technical Implementation
+This repository does not imply sponsorship, endorsement, or affiliation with Google, Gemini, the Odawa people or tribal governments, or any other referenced organization or platform.
 
-Framework: React 18 (Single-file "Atomic" architecture).
+## Rights and Use
 
-Styling: Tailwind CSS + Framer Motion (Glassmorphism UI).
+This project is **source-visible and all rights reserved**. It is not licensed under MIT.
 
-Models: - Reasoning: gemini-2.5-flash-preview-09-2025
+Public access permits viewing and evaluation only. It does not authorize copying, redistribution, adaptation, commercialization, dataset ingestion, AI training, or derivative works.
 
-Vision: imagen-4.0-generate-001
+See [`repository-standard/LICENSE`](repository-standard/LICENSE), [`COPYRIGHT.md`](repository-standard/COPYRIGHT.md), [`AI_POLICY.md`](repository-standard/AI_POLICY.md), and [`ATTRIBUTION.md`](repository-standard/ATTRIBUTION.md).
 
-Voice: gemini-2.5-flash-preview-tts (Voice: Kore/Charon)
+---
 
-Deployment: Optimized for GitHub Pages.
-
-🚀 Setup & Launch
-
-Clone the repository:
-git clone [https://github.com/Bartron773/spineflow-tiny-showcase.git](https://github.com/Bartron773/spineflow-tiny-showcase.git)
-
-Install Dependencies:
-npm install
-
-Run Locally:
-npm start
-
-Created with curiosity and precision in Hart, Michigan. Narrated by Pegasus.
-
-🧠 Tech Stack
-
-* React + Vite
-* TailwindCSS
-* Gemini API (text, image, TTS)
-* Lucide Icons
-
-🌍 Live Demo
-https://spineflow-nwh7ttdb.manus.space
-
-🧩 Architecture
-
-* nodes → spatial definitions
-* Gemini → AI service layer
-* UI → rendering + interaction layer
-
-📌 Status
-
-Experimental / Conceptual Product
-
-⸻
-
-🤝 Contributing
-
-Pull requests welcome. See CONTRIBUTING.md.
-
-🛡 Security
-
-See SECURITY.md.
-
-📜 License
-
-## License Note
-
-This project is licensed under MIT.
-
-SpineFlow Tiny is an experimental spatial interface system.  
-Generated outputs and AI integrations may be subject to third-party model terms (e.g., Google Gemini).
+**Created by Bart Salazar / Simple Minds Studios**  
+Hart, Michigan — 2026
