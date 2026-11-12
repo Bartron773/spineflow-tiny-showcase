@@ -1,0 +1,12 @@
+"use strict";
+const test=require("node:test"),assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path");
+const root=path.resolve(__dirname,"..");
+const {studies,tabs,wrap,summary}=require("../app.js");
+const read=p=>fs.readFileSync(path.join(root,p),"utf8");
+test("five original study themes retained with distinct provenance",()=>{assert.equal(studies.length,5);assert.equal(new Set(studies.map(x=>x.id)).size,5);for(const s of studies){assert.ok(s.title&&s.evidence&&s.next);assert.equal(s.materials.length,3);assert.equal(s.questions.length,3);}});
+test("navigation wraps both ways",()=>{assert.equal(wrap(5,5),0);assert.equal(wrap(-1,5),4);assert.throws(()=>wrap(0,0),RangeError);});
+test("export is allowlisted and labels speculative evidence",()=>{for(const s of studies){const o=summary(s);assert.equal(o.stage,"interpretive-concept-unverified");assert.ok(o.evidence);for(const key of ["apiKey","chatHistory","email","credentials","prompt","imageBase64"])assert.ok(!(key in o));}});
+test("new entrypoint is local and includes navigable semantics",()=>{const html=read("index.html");assert.match(html,/role="tablist"/);assert.match(html,/role="tabpanel"/);assert.match(html,/aria-live="polite"/);assert.match(html,/<dialog/);assert.match(html,/Skip to the studies/);assert.doesNotMatch(html,/<script[^>]+https?:/);assert.doesNotMatch(html,/\son[a-z]+\s*=/i);});
+test("no unsafe HTML sinks, API calls or hardcoded browser credentials",()=>{const js=read("app.js");assert.doesNotMatch(js,/\b(fetch\s*\(|XMLHttpRequest|innerHTML|insertAdjacentHTML|eval\s*\()/);assert.match(js,/textContent/);assert.match(js,/replaceChildren/);});
+test("responsive and reduced-motion styling",()=>{const css=read("styles.css");assert.match(css,/prefers-reduced-motion:reduce/);assert.match(css,/:focus-visible/);assert.match(css,/@media\(max-width:640px\)/);assert.doesNotMatch(css,/overflow-y:\s*hidden/);});
+test("original experiment remains in repository",()=>{assert.ok(fs.existsSync(path.join(root,"client/public/spineflow-v5.6.html")));});

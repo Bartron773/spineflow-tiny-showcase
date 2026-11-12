@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1115">
+<meta name="description" content="SpineFlow Tiny — five interactive concept studies of architecture, materials, sound, robotics and movement by Simple Minds Studios.">
+<title>SpineFlow Tiny — Interactive architectural studies | Simple Minds Studios</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#study">Skip to the studies</a>
+<div class="site">
+<header class="topbar">
+<a class="brand" href="#top" aria-label="SpineFlow Tiny home"><span class="brand-mark" aria-hidden="true">S<span>F</span></span><span><strong>SpineFlow</strong><small>TINY / STUDIO EXPERIMENT</small></span></a>
+<div class="top-actions"><span class="status"><span class="status-dot" aria-hidden="true"></span>Offline concept gallery</span><button id="about-open" class="quiet" type="button">About</button></div>
+</header>
+<main id="top">
+<section class="intro" aria-labelledby="page-title"><div class="intro-copy"><p class="eyebrow">Simple Minds Studios / Architectural imagination</p><h1 id="page-title">Ideas take <em>shape.</em></h1><p class="lede">Five interactive studies of space, material and story. Explore a concept, inspect its assumptions and imagine what it could become.</p><a class="cta" href="#study">Explore the studies <span aria-hidden="true">↓</span></a></div><p class="intro-aside">Concepts, not construction plans.<br> No AI connection or account required.<br> Original experiments preserved.</p></section>
+<section class="workspace" id="study" aria-labelledby="workspace-title">
+<div class="workspace-head"><div><p class="eyebrow">01 / THE STUDIES</p><h2 id="workspace-title">The spatial notebook</h2></div><div class="workspace-meta"><span id="counter" aria-live="polite">01 / 05</span><span class="tag">Concept · Unverified</span></div></div>
+<div class="workspace-body">
+<div class="study-info">
+<div class="category" id="category">Place & heritage / interpretive</div><h3 id="study-title">Heritage Study</h3><p class="summary" id="study-summary">An exploratory timber interior shaped by place and story.</p>
+<div class="tablist" role="tablist" aria-label="Study detail views">
+<button id="tab-story" type="button" role="tab" aria-selected="true" aria-controls="detail-panel" tabindex="0" data-tab="story">Story</button>
+<button id="tab-materials" type="button" role="tab" aria-selected="false" aria-controls="detail-panel" tabindex="-1" data-tab="materials">Materials</button>
+<button id="tab-questions" type="button" role="tab" aria-selected="false" aria-controls="detail-panel" tabindex="-1" data-tab="questions">Questions</button>
+</div>
+<div id="detail-panel" role="tabpanel" aria-labelledby="tab-story" tabindex="0" class="detail"></div>
+<div class="inspector"><p class="eyebrow">SOURCE / STATUS</p><dl><div><dt>Stage</dt><dd id="evidence-stage">Interpretive concept</dd></div><div><dt>Evidence</dt><dd id="evidence-source">Design study; no measured specifications</dd></div><div><dt>Next step</dt><dd id="evidence-next">Source review and site verification</dd></div></dl></div>
+<div class="study-controls"><button type="button" id="previous" class="quiet">← Previous</button><button type="button" id="next" class="primary">Next study →</button><button type="button" id="export" class="quiet">Export summary</button></div><p id="action-status" role="status" aria-live="polite" class="action-status"></p>
+</div>
+<div class="stage" id="stage" data-theme="heritage">
+<div class="stage-top"><span>SPINEFLOW / STUDY SPACE</span><span id="stage-id">01 — 05</span></div>
+<div class="scene" aria-hidden="true"><div class="grid-plane"></div><div class="structure"><div class="face face-a"></div><div class="face face-b"></div><div class="face face-c"></div><div class="light-beam"></div><div class="orb"></div></div></div>
+<div class="stage-footer"><span id="stage-label">Architectural atmosphere study</span><span>Abstract visual · not measured</span></div>
+</div></div>
+<div class="study-index" id="study-index" role="group" aria-label="Choose a study"></div>
+</section>
+<section class="principles" aria-label="How to read these studies"><article><span>01 / EXPERIENCE</span><h2>Explore first.</h2><p>Every study works without external services or generated media. The illustration is abstract, not a construction drawing.</p></article><article><span>02 / EVIDENCE</span><h2>Question the details.</h2><p>Materials, historical interpretations and technical claims are labeled as proposals until supported by real sources.</p></article><article><span>03 / OWNERSHIP</span><h2>Keep the original.</h2><p>This edition preserves the five original study themes and the SpineFlow name while clarifying what the interface actually does.</p></article></section>
+</main>
+<footer class="footer"><span>© 2026 Bart Salazar · Simple Minds Studios</span><a href="https://simplemindsstudios.com/ethos/">Studio ethos</a><a href="https://github.com/Bartron773/spineflow-tiny-showcase/blob/main/client/public/spineflow-v5.6.html">Original v5.6 experiment</a></footer>
+</div>
+<dialog id="about-dialog" aria-labelledby="about-title"><div class="dialog-inner"><p class="eyebrow">About this edition</p><h2 id="about-title">SpineFlow Tiny</h2><p>An experimental architecture and spatial-storytelling gallery by Bart Salazar / Simple Minds Studios. These five studies are speculative design work, not verified engineering, measured acoustic specifications or authoritative cultural reconstructions.</p><p>The heritage study references regional history as an area for future source review; no endorsement or validation by the Odawa people or tribal governments is implied. The J.O.E. concept is fictional and no live chatbot is active.</p><p>This static-first edition does not transmit user input, contact generative-AI providers, use analytics or require API credentials.</p><button id="about-close" type="button" class="primary">Close</button></div></dialog>
+</body>
+</html>
