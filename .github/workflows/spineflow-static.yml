@@ -1,0 +1,32 @@
+name: SpineFlow static gallery checks
+on:
+  push:
+    branches: [main, lincoln1/spineflow-l2-remediation]
+  pull_request:
+    paths:
+      - "index.html"
+      - "styles.css"
+      - "app.js"
+      - "tests/**"
+      - "tools/**"
+      - "package.json"
+      - ".github/workflows/spineflow-static.yml"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test static gallery
+        run: node --test tests/gallery.test.cjs
+      - name: Build static gallery
+        run: node tools/build.cjs
+      - name: Check output
+        run: |
+          test -s dist/index.html
+          test -s dist/styles.css
+          test -s dist/app.js
