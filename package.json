@@ -12,12 +12,8 @@
     "tailwind-merge": "^1.14.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "node --test tests/gallery.test.cjs",
+    "build": "node tools/build.cjs"
   },
   "devDependencies": {
     "gh-pages": "^6.0.0",
@@ -36,5 +32,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "SpineFlow Tiny — static-first architectural concept gallery by Simple Minds Studios",
+  "spineflow_legacy_note": "Existing dependencies, pnpm lock and Vite/CRA configs are archival; static-first build needs only Node 18+ and no npm install."
 }
